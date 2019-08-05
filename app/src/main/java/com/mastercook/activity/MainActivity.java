@@ -5,19 +5,24 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
-import android.view.View;
-import android.widget.GridView;
 import android.widget.ProgressBar;
-import android.widget.Toolbar;
 
 import com.mastercook.R;
-import com.mastercook.adapter.GridAdapter;
+import com.mastercook.adapter.RecyclerViewAdapter;
+import com.mastercook.model.RecipieData;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    GridAdapter cardAdapter;
+    RecyclerViewAdapter cardAdapter;
 
     private ProgressBar cardsLoadingProgressBar;
+
+    List<RecipieData> mRecipieList;
+
+    RecipieData mRecipieData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,23 +31,26 @@ public class MainActivity extends AppCompatActivity {
 
         setTitle(getString(R.string.activity_main_title));
 
-        Toolbar mToolbar = findViewById(R.id.toolbar);
-        mToolbar.setTitle(getResources().getString(R.string.app_name));
-
         RecyclerView mRecyclerView = findViewById(R.id.cards_recyclerview);
-        GridLayoutManager mGridLayoutManager = new GridLayoutManager(MainActivity.this, 2);
+        GridLayoutManager mGridLayoutManager = new GridLayoutManager(MainActivity.this, 1);
         mRecyclerView.setLayoutManager(mGridLayoutManager);
 
 
-        cardsLoadingProgressBar = findViewById(R.id.cards_loading_progress_bar);
+        mRecipieList = new ArrayList<>();
+        mRecipieData = new RecipieData("1","Rose Chips","4", R.drawable.potato_roses);
+        mRecipieList.add(mRecipieData);
+        mRecipieData = new RecipieData("2","Brownies","6", R.drawable.brownies);
+        mRecipieList.add(mRecipieData);
+        mRecipieData = new RecipieData("3","Irani Chai","1", R.drawable.chai);
+        mRecipieList.add(mRecipieData);
+
+        RecyclerViewAdapter mAdapter = new RecyclerViewAdapter(MainActivity.this, mRecipieList);
+        mRecyclerView.setAdapter(mAdapter);
+
+        //cardsLoadingProgressBar = findViewById(R.id.cards_loading_progress_bar);
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-    }
-
-    public void toggleProgressBar(boolean isLoading) {
-        cardsLoadingProgressBar.setVisibility(isLoading ? View.VISIBLE : View.GONE);
-    }
+//    public void toggleProgressBar(boolean isLoading) {
+//        cardsLoadingProgressBar.setVisibility(isLoading ? View.VISIBLE : View.GONE);
+//    }
 }
