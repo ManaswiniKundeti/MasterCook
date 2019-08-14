@@ -45,8 +45,8 @@
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@android:color/darker_gray"/>
+        android:layout_height="50dp"
+        android:background="@android:color/white"/>
 
     <ListView
         android:id="@+id/steps_list_view"

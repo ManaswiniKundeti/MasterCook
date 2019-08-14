@@ -42,13 +42,9 @@ public class StepsListAdapter extends BaseAdapter {
         if(view == null) {
             view = LayoutInflater.from(context).inflate(R.layout.step_row_layout, viewGroup, false);
         }
-
         TextView shortDescription = view.findViewById(R.id.short_description);
-
         RecipeSteps steps = mRecipeSteps.get(i);
-
         shortDescription.setText(steps.getmStepShortDescription());
-
         return view;
     }
 }

@@ -1,9 +1,13 @@
 package com.mastercook.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -16,13 +20,8 @@ import com.mastercook.adapter.StepsListAdapter;
 import com.mastercook.model.RecipeData;
 import com.mastercook.model.RecipeIngredients;
 import com.mastercook.model.RecipeSteps;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
@@ -30,9 +29,6 @@ import java.util.List;
 
 public class RecipeDetailActivity extends AppCompatActivity {
 
-    private TextView mQuantityTextView;
-    private TextView mMeasureTextView;
-    private TextView mIngredientNameTextView;
     private TextView mRecipeTitleTextView;
     private ImageView mRecipeImageView;
 
@@ -45,10 +41,6 @@ public class RecipeDetailActivity extends AppCompatActivity {
     private List<RecipeData> mRecipieDataList = new ArrayList<>();
     private List<RecipeIngredients> mIngredientList = new ArrayList<>();
     private List<RecipeSteps> mStepsList = new ArrayList<>();
-
-    private RecipeData mData ;
-    private RecipeIngredients mIngredientData;
-    private RecipeSteps mStepsData;
 
     private static final String TAG = RecipeDetailActivity.class.getSimpleName();
 
@@ -64,6 +56,23 @@ public class RecipeDetailActivity extends AppCompatActivity {
         mRecipeImageView = findViewById(R.id.detail_card_image);
         ingredientListView = findViewById(R.id.ingredient_list_view);
         stepsListView = findViewById(R.id.steps_list_view);
+
+        stepsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+                Log.d(TAG, "clicked position:" + position);
+
+
+                Context context = RecipeDetailActivity.this;
+                Class destinationActivity = StepDetailActivity.class;
+                Intent createStepDetailActivityIntent = new Intent(context, destinationActivity);
+
+                int selectedStepId = mStepsList.get(position).getmStepId();
+
+                createStepDetailActivityIntent.putExtra(StepDetailActivity.PARAM_STEP_ID, selectedStepId);
+                startActivity(createStepDetailActivityIntent);
+            }
+        });
 
         getRecipeDetails();
 
@@ -104,65 +113,16 @@ public class RecipeDetailActivity extends AppCompatActivity {
     }
 
     private void getRecipeDetails() {
-
         try {
-
             Type listType = new TypeToken<List<RecipeData>>() {}.getType();
 
             List<RecipeData> recipeList = new Gson().fromJson(loadJSONFromFile(), listType);
 
             mRecipieDataList.clear();
             mRecipieDataList.addAll(recipeList);
-
         } catch (Exception e) {
             Log.e(TAG, e.getLocalizedMessage());
         }
-
-            /*try {
-                JSONArray jsonArray = new JSONArray(loadJSONFromFile());
-                for (int i = 0; i < jsonArray.length(); i++) {
-                    JSONObject eachRecipeObject = jsonArray.getJSONObject(i);
-
-                    int mDishId = eachRecipeObject.getInt("id");
-                    String mDishName = eachRecipeObject.getString("name");
-                    JSONArray ingredientsArray = eachRecipeObject.getJSONArray("ingredients");
-                    JSONObject ingredientObject = ingredientsArray.getJSONObject(i);
-                    Double mIngredientQuantity = ingredientObject.getDouble("quantity");
-                    String mIngredientMeasure = ingredientObject.getString("measure");
-                    String mIngredientName = ingredientObject.getString("ingredient");
-                    JSONArray stepsArray = eachRecipeObject.getJSONArray("steps");
-                    JSONObject stepsObject = stepsArray.getJSONObject(i);
-                    int mStepId = stepsObject.getInt("id");
-                    String mStepShortDescription = stepsObject.getString("shortDescription");
-                    String mStepDescription = stepsObject.getString("description");
-                    String mStepVideoURL = stepsObject.getString("videoURL");
-                    String mStepThumbnailURL = stepsObject.getString("thumbnailURL");
-                    int mDishServings = eachRecipeObject.getInt("servings");
-                    String mDishImage = eachRecipeObject.getString("image");
-
-                    mData = new RecipeData();
-                    mIngredientData = new RecipeIngredients();
-                    mStepsData = new RecipeSteps();
-
-                    mData.setmDishId(mDishId);
-                    mData.setmDishName(mDishName);
-                    mIngredientData.setmIngredientQuantity(mIngredientQuantity);
-                    mIngredientData.setmIngredientMeasure(mIngredientMeasure);
-                    mIngredientData.setmIngredient(mIngredientName);
-                    mStepsData.setmStepId(mStepId);
-                    mStepsData.setmStepShortDescription(mStepShortDescription);
-                    mStepsData.setmStepDescription(mStepDescription);
-                    mStepsData.setmStepVideoURL(mStepVideoURL);
-                    mStepsData.setmStepThumbnailURL(mStepThumbnailURL);
-                    mData.setmDishServings(mDishServings);
-                    mData.setmDishImage(mDishImage);
-
-                    mRecipieDataList.add(mData);
-
-                }
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }*/
     }
 
     private void getRecipeData(int selectedRecipeId) {

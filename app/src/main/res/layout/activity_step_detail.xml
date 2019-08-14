@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activity.StepDetailActivity"
+    android:orientation="vertical">
+
+   <LinearLayout
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content"
+       android:orientation="vertical">
+
+      <TextView
+          android:id="@+id/step_short_description"
+          android:layout_width="match_parent"
+          android:layout_height="92dp"
+          android:gravity="center"
+          android:textSize="18sp"
+          android:text= "short_Description"
+          android:textStyle="italic|bold"
+          android:textAlignment="textStart"
+          android:layout_marginLeft="20dp"
+          android:textAllCaps="true"/>
+      <View
+          android:layout_width="match_parent"
+          android:layout_height="30dp"
+          android:background="@android:color/white"/>
+      <TextView
+          android:id="@+id/step_description"
+          android:layout_width="match_parent"
+          android:layout_height="92dp"
+          android:gravity="center"
+          android:textSize="18sp"
+          android:text="Description"
+          android:textAlignment="textStart"
+          android:layout_marginLeft="20dp"
+          android:textStyle="italic|bold" />
+      <View
+          android:layout_width="match_parent"
+          android:layout_height="30dp"
+          android:background="@android:color/white" />
+      <TextView
+          android:id="@+id/step_video_url"
+          android:layout_width="match_parent"
+          android:layout_height="92dp"
+          android:gravity="center"
+          android:textSize="18sp"
+          android:text="Video URL"
+          android:textAlignment="textStart"
+          android:layout_marginLeft="20dp"
+          android:textStyle="italic|bold" />
+   </LinearLayout>
+
+   <LinearLayout
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content"
+       android:orientation="horizontal"
+       android:layout_marginTop="250dp"
+       android:layout_marginLeft="20dp"
+       android:layout_marginRight="20dp">
+      <Button
+          android:id="@+id/backward_button"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="backward"
+          android:padding="15dp"/>
+      <Button
+          android:id="@+id/forward_button"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="Forward"
+          android:layout_marginLeft="140dp"
+          android:padding="15dp"/>
+
+   </LinearLayout>
+
+</LinearLayout>
