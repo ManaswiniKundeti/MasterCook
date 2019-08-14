@@ -3,26 +3,40 @@ package com.mastercook.activity;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
-import android.widget.ProgressBar;
+import android.util.Log;
+import android.view.View;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import com.mastercook.CustomItemClickListener;
 import com.mastercook.R;
 import com.mastercook.adapter.RecyclerViewAdapter;
-import com.mastercook.model.RecipieData;
-
+import com.mastercook.model.RecipeData;
+import com.mastercook.model.RecipeIngredients;
+import com.mastercook.model.RecipeSteps;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+import java.io.IOException;
+import java.io.InputStream;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
+
 public class MainActivity extends AppCompatActivity {
 
-    RecyclerViewAdapter cardAdapter;
+    private static final String TAG = MainActivity.class.getSimpleName();
 
-    private ProgressBar cardsLoadingProgressBar;
+    RecyclerViewAdapter mRecipeAdapter;
 
-    List<RecipieData> mRecipieList;
-
-    RecipieData mRecipieData;
+    public List<RecipeData> mRecipeList = new ArrayList<>();
+    private RecipeData recipeModel;
+    private RecipeIngredients ingredientsModel;
+    private RecipeSteps stepsModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,22 +49,55 @@ public class MainActivity extends AppCompatActivity {
         GridLayoutManager mGridLayoutManager = new GridLayoutManager(MainActivity.this, 1);
         mRecyclerView.setLayoutManager(mGridLayoutManager);
 
+        getRecipies();
 
-        mRecipieList = new ArrayList<>();
-        mRecipieData = new RecipieData("1","Rose Chips","4", R.drawable.potato_roses);
-        mRecipieList.add(mRecipieData);
-        mRecipieData = new RecipieData("2","Brownies","6", R.drawable.brownies);
-        mRecipieList.add(mRecipieData);
-        mRecipieData = new RecipieData("3","Irani Chai","1", R.drawable.chai);
-        mRecipieList.add(mRecipieData);
+        mRecipeAdapter = new RecyclerViewAdapter(MainActivity.this, mRecipeList, new CustomItemClickListener() {
+            @Override
+            public void onItemClick(View v, int position) {
+                Log.d(TAG, "clicked position:" + position);
 
-        RecyclerViewAdapter mAdapter = new RecyclerViewAdapter(MainActivity.this, mRecipieList);
-        mRecyclerView.setAdapter(mAdapter);
+                Context context = MainActivity.this;
+                Class destinationActivity = RecipeDetailActivity.class;
+                Intent createRecipeDetailActivityIntent = new Intent(context, destinationActivity);
 
-        //cardsLoadingProgressBar = findViewById(R.id.cards_loading_progress_bar);
+                int selectedRecipeId = mRecipeList.get(position).getmDishId();
+
+                createRecipeDetailActivityIntent.putExtra(RecipeDetailActivity.PARAM_RECIPE_ID, selectedRecipeId);
+                startActivity(createRecipeDetailActivityIntent);
+
+            }
+        });
+        mRecyclerView.setAdapter(mRecipeAdapter);
     }
 
-//    public void toggleProgressBar(boolean isLoading) {
-//        cardsLoadingProgressBar.setVisibility(isLoading ? View.VISIBLE : View.GONE);
-//    }
+    public String loadJSONFromFile() {
+        String json = null;
+        try {
+            InputStream is = getAssets().open("Recipes.json");
+            int size = is.available();
+            byte[] buffer = new byte[size];
+            is.read(buffer);
+            is.close();
+            json = new String(buffer, "UTF-8");
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            return null;
+        }
+        return json;
+    }
+
+    private void getRecipies() {
+        try {
+
+            Type listType = new TypeToken<List<RecipeData>>() {}.getType();
+
+            List<RecipeData> recipeList = new Gson().fromJson(loadJSONFromFile(), listType);
+
+            mRecipeList.clear();
+            mRecipeList.addAll(recipeList);
+
+        } catch (Exception e) {
+            Log.e(TAG, e.getLocalizedMessage());
+        }
+    }
 }
