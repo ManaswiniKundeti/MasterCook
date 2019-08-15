@@ -11,7 +11,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.MediaController;
 import android.widget.TextView;
+import android.widget.Toast;
+import android.widget.VideoView;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -19,6 +22,7 @@ import com.mastercook.R;
 import com.mastercook.model.RecipeData;
 import com.mastercook.model.RecipeSteps;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Type;
@@ -35,7 +39,9 @@ public class StepDetailActivity extends AppCompatActivity {
 
     TextView shortDescription;
     TextView description;
-    TextView videoUrl;
+    //TextView videoUrl;
+
+    VideoView mStepVideoView;
 
     Button mForwardButton;
     Button mBackwardButton;
@@ -50,7 +56,8 @@ public class StepDetailActivity extends AppCompatActivity {
 
         shortDescription = findViewById(R.id.step_short_description);
         description = findViewById(R.id.step_description);
-        videoUrl = findViewById(R.id.step_video_url);
+        //videoUrl = findViewById(R.id.step_video_url);
+        mStepVideoView = findViewById(R.id.step_video_view);
         mBackwardButton = findViewById(R.id.backward_button);
         mForwardButton = findViewById(R.id.forward_button);
 
@@ -83,7 +90,6 @@ public class StepDetailActivity extends AppCompatActivity {
             }
             getStepsData(selectedStepId);
         }
-
 
     }
 
@@ -140,25 +146,50 @@ public class StepDetailActivity extends AppCompatActivity {
         }
         shortDescription.setText(stepDetails.getmStepShortDescription());
         description.setText(stepDetails.getmStepDescription());
-        videoUrl.setText(stepDetails.getmStepVideoURL());
 
-        final String videoUrlString = stepDetails.getmStepVideoURL();
-
-        videoUrl.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                playVideoOnClick(videoUrlString);
+        String videoPath = stepDetails.getmStepVideoURL();
+        String thumbnailVideoPath = stepDetails.getmStepThumbnailURL();
+        if(isNullOrEmpty(videoPath)){
+            if(isNullOrEmpty(thumbnailVideoPath)){
+                Toast.makeText(this, "Video is not available", Toast.LENGTH_SHORT).show();
+            }else{
+                mStepVideoView.setVideoPath(thumbnailVideoPath);
+                mStepVideoView.setMediaController(new MediaController(this));
+                mStepVideoView.requestFocus();
+                mStepVideoView.start();
             }
-        });
+        } else {
+            mStepVideoView.setVideoPath(videoPath);
+            mStepVideoView.setMediaController(new MediaController(this));
+            mStepVideoView.requestFocus();
+            mStepVideoView.start();
+        }
+
+    }
+    public static boolean isNullOrEmpty(String str) {
+        if(str != null && !str.trim().isEmpty())
+            return false;
+        return true;
     }
 
-    private void playVideoOnClick(String videoUrlString) {
-        Intent appIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(videoUrlString));
-        Intent webIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(videoUrlString));
-        try {
-            startActivity(appIntent);
-        } catch (ActivityNotFoundException ex){
-            startActivity(webIntent);
-        }
-    }
+//    private void playVideoOnClick(String videoUrlString) {
+//        Intent appIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(videoUrlString));
+//        Intent webIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(videoUrlString));
+//
+//        try {
+//            if(appIntent != null){
+//                startActivity(appIntent);
+//            } else {
+//                videoUrl.setText("No Video available");
+//            }
+//
+//        } catch (ActivityNotFoundException ex){
+//            if(webIntent != null){
+//                startActivity(webIntent);
+//            } else {
+//                videoUrl.setText("No Video available");
+//            }
+//
+//        }
+//    }
 }

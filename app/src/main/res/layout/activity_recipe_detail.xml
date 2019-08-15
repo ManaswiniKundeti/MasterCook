@@ -32,10 +32,25 @@
                 android:layout_width="match_parent"
                 android:layout_height="42dp"
                 android:gravity="center"
+                android:text= "Recipe Name"
                 android:textSize="18sp"
                 android:textStyle="italic|bold" />
         </LinearLayout>
     </androidx.cardview.widget.CardView>
+
+    <TextView
+        android:id="@+id/ingredient_list_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textSize="18sp"
+        android:text= "Ingredient List"
+        android:textStyle="italic|bold"
+        android:textAlignment="textStart"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:textAllCaps="true"
+        android:paddingBottom="10dp"/>
 
     <ListView
         android:id="@+id/ingredient_list_view"
@@ -45,9 +60,22 @@
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="30dp"
         android:background="@android:color/white"/>
 
+    <TextView
+        android:id="@+id/steps_list_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textSize="18sp"
+        android:text= "Steps to Follow"
+        android:textStyle="italic|bold"
+        android:textAlignment="textStart"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:textAllCaps="true"
+        android:paddingBottom="10dp"/>
     <ListView
         android:id="@+id/steps_list_view"
         android:layout_width="match_parent"

@@ -1,7 +1,6 @@
 package com.mastercook.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,7 +10,6 @@ import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.mastercook.R;
@@ -32,6 +30,9 @@ public class RecipeDetailActivity extends AppCompatActivity {
     private TextView mRecipeTitleTextView;
     private ImageView mRecipeImageView;
 
+    TextView mIngredientsListTitle;
+    TextView mStepsToFollowTitle;
+
     IngredientListAdapter mIngredientListAdapter;
     StepsListAdapter mStepsListAdapter;
 
@@ -50,18 +51,23 @@ public class RecipeDetailActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe_detail);
+
         setTitle("Recipe Details");
 
         mRecipeTitleTextView = findViewById(R.id.detail_card_title);
         mRecipeImageView = findViewById(R.id.detail_card_image);
         ingredientListView = findViewById(R.id.ingredient_list_view);
         stepsListView = findViewById(R.id.steps_list_view);
+        mIngredientsListTitle = findViewById(R.id.ingredient_list_title);
+        mStepsToFollowTitle = findViewById(R.id.steps_list_title);
+
+        mIngredientsListTitle.setText("INGREDIENTS LIST");
+        mStepsToFollowTitle.setText("STEPS TO FOLLOW");
 
         stepsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                Log.d(TAG, "clicked position:" + position);
-
+                Log.d(TAG, "step's clicked position:" + position);
 
                 Context context = RecipeDetailActivity.this;
                 Class destinationActivity = StepDetailActivity.class;
@@ -86,7 +92,7 @@ public class RecipeDetailActivity extends AppCompatActivity {
         if(intentThatStartedThisActivity.hasExtra(PARAM_RECIPE_ID)) {
             int selectedRecipeId = intentThatStartedThisActivity.getIntExtra(PARAM_RECIPE_ID, -1);
             if (selectedRecipeId == -1) {
-                Log.e(TAG, "No recipe id on intent, finishing activity");
+                Log.e(TAG, "No recipe id reeived on intent, finishing activity");
                 finish();
                 return;
             }
@@ -109,6 +115,7 @@ public class RecipeDetailActivity extends AppCompatActivity {
             ex.printStackTrace();
             return null;
         }
+        Log.d(TAG, "Loaded json from assets file in RecipeDetailActivity");
         return json;
     }
 
@@ -120,6 +127,7 @@ public class RecipeDetailActivity extends AppCompatActivity {
 
             mRecipieDataList.clear();
             mRecipieDataList.addAll(recipeList);
+            Log.d(TAG, "Recipe data added to list in RecipeDetailActivity");
         } catch (Exception e) {
             Log.e(TAG, e.getLocalizedMessage());
         }

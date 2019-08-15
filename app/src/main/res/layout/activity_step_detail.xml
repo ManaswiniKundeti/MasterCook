@@ -12,10 +12,24 @@
        android:layout_height="wrap_content"
        android:orientation="vertical">
 
+      <VideoView
+          android:id="@+id/step_video_view"
+          android:layout_width="fill_parent"
+          android:layout_alignParentRight="true"
+          android:layout_alignParentLeft="true"
+          android:layout_alignParentTop="true"
+          android:layout_alignParentBottom="true"
+          android:layout_height="400dp"
+          />
+      <View
+          android:layout_width="match_parent"
+          android:layout_height="30dp"
+          android:background="@android:color/white"/>
+
       <TextView
           android:id="@+id/step_short_description"
           android:layout_width="match_parent"
-          android:layout_height="92dp"
+          android:layout_height="wrap_content"
           android:gravity="center"
           android:textSize="18sp"
           android:text= "short_Description"
@@ -30,7 +44,7 @@
       <TextView
           android:id="@+id/step_description"
           android:layout_width="match_parent"
-          android:layout_height="92dp"
+          android:layout_height="wrap_content"
           android:gravity="center"
           android:textSize="18sp"
           android:text="Description"
@@ -41,23 +55,15 @@
           android:layout_width="match_parent"
           android:layout_height="30dp"
           android:background="@android:color/white" />
-      <TextView
-          android:id="@+id/step_video_url"
-          android:layout_width="match_parent"
-          android:layout_height="92dp"
-          android:gravity="center"
-          android:textSize="18sp"
-          android:text="Video URL"
-          android:textAlignment="textStart"
-          android:layout_marginLeft="20dp"
-          android:textStyle="italic|bold" />
    </LinearLayout>
+
 
    <LinearLayout
        android:layout_width="match_parent"
        android:layout_height="wrap_content"
        android:orientation="horizontal"
-       android:layout_marginTop="250dp"
+       android:layout_marginTop="69dp"
+       android:layout_marginBottom="10dp"
        android:layout_marginLeft="20dp"
        android:layout_marginRight="20dp">
       <Button

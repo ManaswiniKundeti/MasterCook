@@ -1,6 +1,7 @@
 package com.mastercook.adapter;
 
 import android.content.Context;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.mastercook.CustomItemClickListener;
 import com.mastercook.R;
 import com.mastercook.model.RecipeData;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -73,6 +75,11 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
             //declare and initialize the image & text views on the card
             mCardImage = itemView.findViewById(R.id.card_image);
+//            Picasso.get()
+//                    .load()
+//                    .load(Uri.parse(""))
+//                    .into(mCardImage);
+
             mCardTitle = itemView.findViewById(R.id.card_title);
         }
     }
